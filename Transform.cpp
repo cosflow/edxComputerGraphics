@@ -22,6 +22,14 @@ mat3 Transform::rotate(const float degrees, const vec3& axis) {
 
 // Transforms the camera left around the "crystal ball" interface
 void Transform::left(float degrees, vec3& eye, vec3& up) {
+	mat3 rotation_matrix = Transform::rotate(degrees, up);
+	mat3 normal_rotation_matrix = glm::transpose(glm::inverse(rotation_matrix));
+	eye = rotation_matrix * eye;
+	up = normal_rotation_matrix * up;
+}
+
+// Transforms the camera up around the "crystal ball" interface
+void Transform::up(float degrees, vec3& eye, vec3& up) {
 	vec3 ort = glm::cross(eye, up);
 	mat3 rotation_matrix = Transform::rotate(degrees, ort);
 	mat3 normal_rotation_matrix = glm::transpose(glm::inverse(rotation_matrix)); 
@@ -30,12 +38,6 @@ void Transform::left(float degrees, vec3& eye, vec3& up) {
 	eye = glm::normalize(eye) * eye_length;
 	up = normal_rotation_matrix * up;
 	up = glm::normalize(up);
-}
-}
-
-// Transforms the camera up around the "crystal ball" interface
-void Transform::up(float degrees, vec3& eye, vec3& up) {
-	
 }
 
 // Your implementation of the glm::lookAt matrix
