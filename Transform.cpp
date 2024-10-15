@@ -15,7 +15,7 @@ mat3 Transform::rotate(const float degrees, const vec3& axis) {
 	glm::mat3 m2(x * x, x * y, x * z, y * x, y * y, y * z, z * x, z * y, z * z);
 	glm::mat3 m3(0, z, -y, -z, 0, x, y, -x, 0);
 
-	glm::mat3 ret = cos(rads)*m1 + (1-cos(rads))*m2 + sin(rads)*m3 ;
+	glm::mat3 ret = cos(rads)*m1 + (1-cos(rads))*m2 + sin(rads)*m3;
 	
   return ret;
 }
@@ -31,13 +31,14 @@ void Transform::left(float degrees, vec3& eye, vec3& up) {
 // Transforms the camera up around the "crystal ball" interface
 void Transform::up(float degrees, vec3& eye, vec3& up) {
 	vec3 ort = glm::cross(eye, up);
-	mat3 rotation_matrix = Transform::rotate(degrees, ort);
+	mat3 rotation_matrix = Transform::rotate(degrees, ort); // Esta matriz no tiene las mismas propiedades que la de la función ant
 	mat3 normal_rotation_matrix = glm::transpose(glm::inverse(rotation_matrix)); 
 	float eye_length = glm::length(eye);
 	eye = rotation_matrix * eye;
 	eye = glm::normalize(eye) * eye_length;
 	up = normal_rotation_matrix * up;
-	up = glm::normalize(up);
+	glm::normalize(up);
+	printf("Coordinates: %.2f, %.2f, %.2f; distance: %.2f\n", up.x, up.y, up.z, sqrt(pow(up.x, 2) + pow(up.y, 2) + pow(up.z, 2)));
 }
 
 // Your implementation of the glm::lookAt matrix
